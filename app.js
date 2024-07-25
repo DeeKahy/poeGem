@@ -16,6 +16,6 @@ app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
-app.listen(port, '0.0.0.0', () => {
-    console.log(`Server running at http://0.0.0.0:${port}`);
+app.listen(port, () => {
+    console.log(`Server running at http://127.0.0.1:${port}`);
 });
