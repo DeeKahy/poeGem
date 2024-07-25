@@ -19,6 +19,7 @@ I plan to replace Node.js with a more performant, Rust-based solution. In my opi
 3. **Display**: Shows the results, indicating which gem color is most effective for transfiguration.
 
 ## Getting Started
+if you are using nix then you can just run `nix develop` otherwise do what i say below.
 
 1. Clone the repository:
    ```bash
