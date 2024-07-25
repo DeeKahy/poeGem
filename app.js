@@ -1,7 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const app = express();
-const port = 3000;
+const port = 3002;
 
 app.get('/api/skill-gems', async (req, res) => {
     try {
@@ -17,5 +17,5 @@ app.get('/', (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`);
+    console.log(`Server running at http://0.0.0.0:${port}`);
 });
