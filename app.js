@@ -1,7 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const app = express();
-const port = 3002;
+const port = 4002;
 
 app.get('/api/skill-gems', async (req, res) => {
     try {
