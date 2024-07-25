@@ -208,7 +208,7 @@ let radio = document.querySelectorAll("input[type=radio]").forEach((el) => {
 })
 
 
-function mainRender() {
+function mainRender(){
   let redCombined = 0;
   let greenCombined = 0;
   let blueCombined = 0;
@@ -216,7 +216,7 @@ function mainRender() {
   fetch("/api/skill-gems")
     .then((response) => response.json())
     .then((data) => {
-
+      
       data.lines.forEach((element) => {
 
         if (
@@ -224,16 +224,16 @@ function mainRender() {
           element.corrupted == (checkedGemLevel > 20 || checkedGemQuality > 20 ? true : undefined) &&
           element.gemLevel == checkedGemLevel &&
           element.gemQuality == (checkedGemQuality > 0 ? checkedGemQuality : undefined)
-        ) {
-
-          if (red.includes(element.name)) {
-            redCombined += element.chaosValue;
-          } else if (green.includes(element.name)) {
-            greenCombined += element.chaosValue;
-          } else if (blue.includes(element.name)) {
-            blueCombined += element.chaosValue;
+        ) {          
+          //if (element.chaosValue >= 50) {
+            if (red.includes(element.name)) {
+              redCombined += element.chaosValue;
+            } else if (green.includes(element.name)) {
+              greenCombined += element.chaosValue;
+            } else if (blue.includes(element.name)) {
+              blueCombined += element.chaosValue;
+            }
           }
-
         }
       });
 
