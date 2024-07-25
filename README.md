@@ -1,5 +1,5 @@
 # poeGem
-Temporary buggy website [poeGem](http://poegem.mantarias.com/). I dont promise it will be up very long. I suggest you just run it locally instead of relying on my bootleg hosting solution.
+Temporary buggy website [poeGem](https://poegem.smallapp.cc/). I dont promise it will be up very long. I suggest you just run it locally instead of relying on my bootleg hosting solution.
 
 
 
