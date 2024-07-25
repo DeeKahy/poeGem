@@ -36,13 +36,3 @@ I plan to replace Node.js with a more performant, Rust-based solution. In my opi
    ```bash
    node app.js
    ```
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-## Contact
-
-For any questions or further information, please open an issue or reach out to me directly.
-
-Happy transfiguring! 🚀
