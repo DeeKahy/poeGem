@@ -1,4 +1,7 @@
 # poeGem
+Temporary buggy website [poeGem](http://poegem.mantarias.com/). I dont promise it will be up very long. I suggest you just run it locally instead of relying on my bootleg hosting solution.
+
+
 
 Welcome to **poeGem**! This tool helps you calculate the most effective gem color to transfigure for marginally better profit in Path of Exile when transfiguring gems.
 
