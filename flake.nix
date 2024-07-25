@@ -16,13 +16,9 @@
       {
         devShell = pkgs.mkShell {
           buildInputs = [
-            pkgs.fontconfig
-            pkgs.libopus
-            pkgs.pkg-config
-            pkgs.cmake
-            pkgs.gnumake
-            pkgs.gcc
-            pkgs.rustup
+            pkgs.nodejs
+
+
           ];
 
           shellHook = ''
