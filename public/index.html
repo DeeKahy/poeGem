@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+        />
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Skill Gem Chaos Value</title>
+    </head>
+    <body>
+        <h1>Skill Gem Chaos Value</h1>
+        <p>
+            View the source code on
+            <a href="https://github.com/DeeKahy/poeGem">github</a>.
+        </p>
+
+        <fieldset id="gemLevel">
+            <legend>Gem Level:</legend>
+            <input type="radio" class="L1" name="gemLevel" value="1" checked />
+            <label htmlFor="L1">1</label>
+            <input type="radio" class="L20" name="gemLevel" value="20"/>
+            <label htmlFor="L20">20</label>
+            <input type="radio" class="L21" name="gemLevel" value="21" />
+            <label htmlFor="L21">21</label>
+        </fieldset>
+
+        <fieldset id="gemQuality">
+            <legend>Gem Quality:</legend>
+            <input type="radio" class="Q0" name="gemQuality"  value = "0" checked />
+            <label htmlFor="Q0">0</label>
+            <input type="radio" class="Q20" name="gemQuality" value = "20" />
+            <label htmlFor="Q20">20</label>
+            <input type="radio" class="Q23" name="gemQuality" value ="23" />
+            <label htmlFor="Q23">23</label> 
+        </fieldset>
+        <div class="results">
+            <div class="result-item" id="red-result">
+                Red Gems: Calculating...
+            </div>
+            <div class="result-item" id="green-result">
+                Green Gems: Calculating...
+            </div>
+            <div class="result-item" id="blue-result">
+                Blue Gems: Calculating...
+            </div>
+        </div>
+
+        <script src="/grabPoeNinja.js"></script>
+        <script src="/code.js"></script>
+    </body>
+</html>

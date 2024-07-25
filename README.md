@@ -35,7 +35,7 @@ I plan to replace Node.js with a more performant, Rust-based solution. In my opi
    
 3. Install dependencies:
    ```bash
-   npm install express axios
+   npm install
    ```
 4. Run the tool:
    ```bash
