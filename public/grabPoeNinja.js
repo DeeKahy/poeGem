@@ -233,7 +233,7 @@ function mainRender(){
             } else if (blue.includes(element.name)) {
               blueCombined += element.chaosValue;
             }
-          }
+          // }
         }
       });
 
