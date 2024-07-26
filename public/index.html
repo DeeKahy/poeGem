@@ -15,6 +15,11 @@
             View the source code on
             <a href="https://github.com/DeeKahy/poeGem">github</a>.
         </p>
+        
+        <p>
+            <li>Anything below this value is treated as worthless and will be counted as zero. It is for deciding at what point a gem is worth enough to be sold.</li>
+            <input type="number" name="number" placeholder="Number" aria-label="Number" id="ignoreAfterChaos" value="50" style="width: 100px;">
+        </p>
 
         <fieldset id="gemLevel">
             <legend>Gem Level:</legend>
@@ -35,6 +40,8 @@
             <input type="radio" class="Q23" name="gemQuality" value ="23" />
             <label htmlFor="Q23">23</label> 
         </fieldset>
+        <button id="calculate">Calculate</button>
+
         <div class="results">
             <div class="result-item" id="red-result">
                 Red Gems: Calculating...
