@@ -4,7 +4,7 @@ const fs = require("fs");
 const app = express();
 const port = 3030;
 const cacheFilePath = "./cache/skillGems.json";
-const cacheDuration = 30 * 60 * 1000; // 30 minutes in milliseconds
+const cacheDuration = 10 * 60 * 1000; // 30 minutes in milliseconds
 
 app.use(express.static("public"));
 
@@ -28,7 +28,7 @@ app.get("/api/skill-gems", async (req, res) => {
     // If cache is old or doesn't exist, fetch new data
     console.log("Fetching new data");
     const response = await axios.get(
-      "https://poe.ninja/api/data/itemoverview?league=Standard&type=SkillGem"
+      "https://poe.ninja/api/data/itemoverview?league=settlers&type=SkillGem"
     );
 
     // Save the new data to cache
