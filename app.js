@@ -6,7 +6,7 @@ app.use(express.static("public"));
 app.get("/api/skill-gems", async (req, res) => {
   try {
     const response = await axios.get(
-      "https://poe.ninja/api/data/itemoverview?league=Necropolis&type=SkillGem",
+      "https://poe.ninja/api/data/itemoverview?league=Standard&type=SkillGem",
     );
 
     res.json(response.data);
