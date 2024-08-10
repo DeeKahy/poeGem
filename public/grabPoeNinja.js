@@ -189,12 +189,15 @@ let blue = [
   "Vortex of Projection",
 ];
 
+
+
 let checkedGemLevel = document.querySelector(
   "#gemLevel input[type=radio]:checked",
 ).value;
 let checkedGemQuality = document.querySelector(
   "#gemQuality input[type=radio]:checked",
 ).value;
+
 let radio = document.querySelectorAll("input[type=radio]").forEach((el) => {
   el.addEventListener("change", () => {
     checkedGemLevel = document.querySelector(
@@ -203,16 +206,23 @@ let radio = document.querySelectorAll("input[type=radio]").forEach((el) => {
     checkedGemQuality = document.querySelector(
       "#gemQuality input[type=radio]:checked",
     ).value;
-    mainRender();
   })
 })
+const myButton = document.getElementById('calculate');
 
+// Add a click event listener to the button
+myButton.addEventListener('click', () => {
+ mainRender();
+ 
+
+});
 
 function mainRender(){
   let redCombined = 0;
   let greenCombined = 0;
   let blueCombined = 0;
 
+  let ignoreAfterChaosValue = document.querySelector("#ignoreAfterChaos").value;
   fetch("/api/skill-gems")
     .then((response) => response.json())
     .then((data) => {
@@ -225,7 +235,9 @@ function mainRender(){
           element.gemLevel == checkedGemLevel &&
           element.gemQuality == (checkedGemQuality > 0 ? checkedGemQuality : undefined)
         ) {          
-          //if (element.chaosValue >= 50) {
+          
+          if (element.chaosValue >= ignoreAfterChaosValue) {
+
             if (red.includes(element.name)) {
               redCombined += element.chaosValue;
             } else if (green.includes(element.name)) {
@@ -256,5 +268,4 @@ function mainRender(){
       document.getElementById("blue-result").textContent = "Error fetching data.";
     });
 }
-mainRender();
 
