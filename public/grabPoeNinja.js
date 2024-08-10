@@ -217,55 +217,78 @@ myButton.addEventListener('click', () => {
 
 });
 
-function mainRender(){
-  let redCombined = 0;
-  let greenCombined = 0;
-  let blueCombined = 0;
+// ... (keep your existing gem arrays and UI interaction code)
 
-  let ignoreAfterChaosValue = document.querySelector("#ignoreAfterChaos").value;
-  fetch("/api/skill-gems")
-    .then((response) => response.json())
-    .then((data) => {
-      
-      data.lines.forEach((element) => {
+function calculateProbability(n) {
+    let probabilities = [];
+    let totalOutcomes = (n * (n - 1) * (n - 2)) / 6;
 
-        if (
-          element.tradeFilter !== undefined &&
-          element.corrupted == (checkedGemLevel > 20 || checkedGemQuality > 20 ? true : undefined) &&
-          element.gemLevel == checkedGemLevel &&
-          element.gemQuality == (checkedGemQuality > 0 ? checkedGemQuality : undefined)
-        ) {          
-          
-          if (element.chaosValue >= ignoreAfterChaosValue) {
+    for (let i = n; i >= 3; i--) {
+        let favorableOutcomes = ((i - 1) * (i - 2)) / 2;
+        let probability = favorableOutcomes / totalOutcomes;
+        probabilities.push(probability);
+    }
 
-            if (red.includes(element.name)) {
-              redCombined += element.chaosValue;
-            } else if (green.includes(element.name)) {
-              greenCombined += element.chaosValue;
-            } else if (blue.includes(element.name)) {
-              blueCombined += element.chaosValue;
-            }
-          // }
-        }
-      });
-
-      let redAverage = redCombined / red.length;
-      let greenAverage = greenCombined / green.length;
-      let blueAverage = blueCombined / blue.length;
-
-      document.getElementById("red-result").textContent =
-        `Red Gems: Average Chaos per Gem = ${redAverage.toFixed(2)}`;
-      document.getElementById("green-result").textContent =
-        `Green Gems: Average Chaos per Gem = ${greenAverage.toFixed(2)}`;
-      document.getElementById("blue-result").textContent =
-        `Blue Gems: Average Chaos per Gem = ${blueAverage.toFixed(2)}`;
-    })
-    .catch((error) => {
-      console.error("Error fetching data:", error);
-      document.getElementById("red-result").textContent = "Error fetching data.";
-      document.getElementById("green-result").textContent =
-        "Error fetching data.";
-      document.getElementById("blue-result").textContent = "Error fetching data.";
-    });
+    return probabilities;
 }
 
+function calculateROI(probabilities, gemValues) {
+    let roi = 0;
+    for (let i = 0; i < Math.min(probabilities.length, gemValues.length); i++) {
+        roi += probabilities[i] * gemValues[i];
+    }
+    return roi;
+}
+
+function mainRender() {
+    let ignoreAfterChaosValue = document.querySelector("#ignoreAfterChaos").value;
+    fetch("/api/skill-gems")
+        .then((response) => response.json())
+        .then((data) => {
+            let redGems = [];
+            let greenGems = [];
+            let blueGems = [];
+
+            data.lines.forEach((element) => {
+                if (element.tradeFilter !== undefined &&
+                    element.corrupted == (checkedGemLevel > 20 || checkedGemQuality > 20 ? true : undefined) &&
+                    element.gemLevel == checkedGemLevel &&
+                    element.gemQuality == (checkedGemQuality > 0 ? checkedGemQuality : undefined) &&
+                    element.chaosValue >= ignoreAfterChaosValue) {
+
+                    if (red.includes(element.name)) {
+                        redGems.push(element.chaosValue || 0);
+                    } else if (green.includes(element.name)) {
+                        greenGems.push(element.chaosValue || 0);
+                    } else if (blue.includes(element.name)) {
+                        blueGems.push(element.chaosValue || 0);
+                    }
+                }
+            });
+
+            redGems.sort((a, b) => b - a);
+            greenGems.sort((a, b) => b - a);
+            blueGems.sort((a, b) => b - a);
+
+            let redProbabilities = calculateProbability(redGems.length);
+            let greenProbabilities = calculateProbability(greenGems.length);
+            let blueProbabilities = calculateProbability(blueGems.length);
+
+            let redROI = calculateROI(redProbabilities, redGems);
+            let greenROI = calculateROI(greenProbabilities, greenGems);
+            let blueROI = calculateROI(blueProbabilities, blueGems);
+
+            document.getElementById("red-result").textContent =
+                `Red Gems: Expected ROI = ${redROI.toFixed(2)} chaos`;
+            document.getElementById("green-result").textContent =
+                `Green Gems: Expected ROI = ${greenROI.toFixed(2)} chaos`;
+            document.getElementById("blue-result").textContent =
+                `Blue Gems: Expected ROI = ${blueROI.toFixed(2)} chaos`;
+        })
+        .catch((error) => {
+            console.error("Error fetching data:", error);
+            document.getElementById("red-result").textContent = "Error fetching data.";
+            document.getElementById("green-result").textContent = "Error fetching data.";
+            document.getElementById("blue-result").textContent = "Error fetching data.";
+        });
+}
