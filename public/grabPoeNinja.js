@@ -217,7 +217,7 @@ myButton.addEventListener('click', () => {
 
 });
 
-// ... (keep your existing gem arrays and UI interaction code)
+
 
 function calculateProbability(n) {
     let probabilities = [];
