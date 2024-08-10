@@ -213,7 +213,7 @@ const myButton = document.getElementById('calculate');
 // Add a click event listener to the button
 myButton.addEventListener('click', () => {
  mainRender();
- 
+
 
 });
 
@@ -232,10 +232,11 @@ function calculateProbability(n) {
     return probabilities;
 }
 
-function calculateROI(probabilities, gemValues) {
+function calculateROI(probabilities, gemValues, ignoreAfterChaosValue) {
     let roi = 0;
-    for (let i = 0; i < Math.min(probabilities.length, gemValues.length); i++) {
-        roi += probabilities[i] * gemValues[i];
+    for (let i = 0; i < probabilities.length; i++) {
+        let gemValue = gemValues[i] >= ignoreAfterChaosValue ? gemValues[i] : 0;
+        roi += probabilities[i] * gemValue;
     }
     return roi;
 }
@@ -253,8 +254,7 @@ function mainRender() {
                 if (element.tradeFilter !== undefined &&
                     element.corrupted == (checkedGemLevel > 20 || checkedGemQuality > 20 ? true : undefined) &&
                     element.gemLevel == checkedGemLevel &&
-                    element.gemQuality == (checkedGemQuality > 0 ? checkedGemQuality : undefined) &&
-                    element.chaosValue >= ignoreAfterChaosValue) {
+                    element.gemQuality == (checkedGemQuality > 0 ? checkedGemQuality : undefined)) {
 
                     if (red.includes(element.name)) {
                         redGems.push(element.chaosValue || 0);
@@ -274,9 +274,9 @@ function mainRender() {
             let greenProbabilities = calculateProbability(greenGems.length);
             let blueProbabilities = calculateProbability(blueGems.length);
 
-            let redROI = calculateROI(redProbabilities, redGems);
-            let greenROI = calculateROI(greenProbabilities, greenGems);
-            let blueROI = calculateROI(blueProbabilities, blueGems);
+            let redROI = calculateROI(redProbabilities, redGems, ignoreAfterChaosValue);
+            let greenROI = calculateROI(greenProbabilities, greenGems, ignoreAfterChaosValue);
+            let blueROI = calculateROI(blueProbabilities, blueGems, ignoreAfterChaosValue);
 
             document.getElementById("red-result").textContent =
                 `Red Gems: Expected ROI = ${redROI.toFixed(2)} chaos`;
