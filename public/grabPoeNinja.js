@@ -237,6 +237,7 @@ function mainRender(){
         ) {          
           
           if (element.chaosValue >= ignoreAfterChaosValue) {
+
             if (red.includes(element.name)) {
               redCombined += element.chaosValue;
             } else if (green.includes(element.name)) {
@@ -244,7 +245,7 @@ function mainRender(){
             } else if (blue.includes(element.name)) {
               blueCombined += element.chaosValue;
             }
-          }
+          // }
         }
       });
 
