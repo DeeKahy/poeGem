@@ -28,7 +28,7 @@ app.get("/api/skill-gems", async (req, res) => {
     // If cache is old or doesn't exist, fetch new data
     console.log("Fetching new data");
     const response = await axios.get(
-      "https://poe.ninja/api/data/itemoverview?league=event&type=SkillGem"
+      "https://poe.ninja/api/data/itemoverview?league=Necro+Settlers&type=SkillGem"
     );
 
     // Save the new data to cache
