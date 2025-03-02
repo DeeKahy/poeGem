@@ -30,6 +30,13 @@
 
             <section>
                 <form id="value-form">
+                    <div class="form-group">
+                        <label for="league-select">League:</label>
+                        <select id="league-select" name="league">
+                            <option value="">Loading leagues...</option>
+                        </select>
+                    </div>
+
                     <label for="ignoreAfterChaos">Ignore gems below this value (Chaos):</label>
                     <input type="number" name="ignoreAfterChaos" id="ignoreAfterChaos" value="5" style="width: 100px;">
 
@@ -42,7 +49,7 @@
                         <input type="radio" class="L21" name="gemLevel" value="21" />
                         <label htmlFor="L21">21</label>
                     </fieldset>
-            
+
                     <fieldset id="gemQuality">
                         <legend>Gem Quality:</legend>
                         <input type="radio" class="Q0" name="gemQuality"  value = "0" checked />
@@ -52,13 +59,13 @@
                         <input type="radio" class="Q23" name="gemQuality" value ="23" />
                         <label htmlFor="Q23">23</label> 
                     </fieldset>
-                    
+
                     <button type="button" id="calculate">Calculate</button>
                 </form>
             </section>
 
             <section class="results">
-                <p>Current league: Settlers of Kalguur 3.25</p>
+                <p id="current-league">Loading league information...</p>
                 <div class="result-item" id="red-result">
                     Red Gems: Calculating...
                 </div>

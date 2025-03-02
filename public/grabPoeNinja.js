@@ -189,8 +189,6 @@ let blue = [
   "Vortex of Projection",
 ];
 
-
-
 let checkedGemLevel = document.querySelector(
   "#gemLevel input[type=radio]:checked",
 ).value;
@@ -208,16 +206,6 @@ let radio = document.querySelectorAll("input[type=radio]").forEach((el) => {
     ).value;
   })
 })
-const myButton = document.getElementById('calculate');
-
-// Add a click event listener to the button
-myButton.addEventListener('click', () => {
- mainRender();
-
-
-});
-
-
 
 function calculateProbability(n) {
     let probabilities = [];
@@ -241,54 +229,5 @@ function calculateROI(probabilities, gemValues, ignoreAfterChaosValue) {
     return roi;
 }
 
-function mainRender() {
-    let ignoreAfterChaosValue = document.querySelector("#ignoreAfterChaos").value;
-    fetch("/api/skill-gems")
-        .then((response) => response.json())
-        .then((data) => {
-            let redGems = [];
-            let greenGems = [];
-            let blueGems = [];
-
-            data.lines.forEach((element) => {
-                if (element.tradeFilter !== undefined &&
-                    element.corrupted == (checkedGemLevel > 20 || checkedGemQuality > 20 ? true : undefined) &&
-                    element.gemLevel == checkedGemLevel &&
-                    element.gemQuality == (checkedGemQuality > 0 ? checkedGemQuality : undefined)) {
-
-                    if (red.includes(element.name)) {
-                        redGems.push(element.chaosValue || 0);
-                    } else if (green.includes(element.name)) {
-                        greenGems.push(element.chaosValue || 0);
-                    } else if (blue.includes(element.name)) {
-                        blueGems.push(element.chaosValue || 0);
-                    }
-                }
-            });
-
-            redGems.sort((a, b) => b - a);
-            greenGems.sort((a, b) => b - a);
-            blueGems.sort((a, b) => b - a);
-
-            let redProbabilities = calculateProbability(redGems.length);
-            let greenProbabilities = calculateProbability(greenGems.length);
-            let blueProbabilities = calculateProbability(blueGems.length);
-
-            let redROI = calculateROI(redProbabilities, redGems, ignoreAfterChaosValue);
-            let greenROI = calculateROI(greenProbabilities, greenGems, ignoreAfterChaosValue);
-            let blueROI = calculateROI(blueProbabilities, blueGems, ignoreAfterChaosValue);
-
-            document.getElementById("red-result").textContent =
-                `Red Gems: Expected ROI = ${redROI.toFixed(2)} chaos`;
-            document.getElementById("green-result").textContent =
-                `Green Gems: Expected ROI = ${greenROI.toFixed(2)} chaos`;
-            document.getElementById("blue-result").textContent =
-                `Blue Gems: Expected ROI = ${blueROI.toFixed(2)} chaos`;
-        })
-        .catch((error) => {
-            console.error("Error fetching data:", error);
-            document.getElementById("red-result").textContent = "Error fetching data.";
-            document.getElementById("green-result").textContent = "Error fetching data.";
-            document.getElementById("blue-result").textContent = "Error fetching data.";
-        });
-}
+// Remove the duplicate mainRender function and all the league-related functions
+// that were added at the end of the file

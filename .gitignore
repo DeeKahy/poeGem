@@ -1,4 +1,3 @@
 
 node_modules/*
-cache/skillGems.json
-cache/newskillGems.json
+cache/*
