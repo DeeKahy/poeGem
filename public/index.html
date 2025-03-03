@@ -4,83 +4,152 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Skill Gem Chaos Value Calculator</title>
-        <meta name="description" content="Calculate the best skill gem color to transfigure based on value from PoeNinja data. Ignore gems below a certain value, and calculate value for different gem levels and quality.">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" />
+        <meta
+            name="description"
+            content="Calculate the best skill gem color to transfigure based on value from PoeNinja data. Ignore gems below a certain value, and calculate value for different gem levels and quality."
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css"
+        />
 
         <style>
             .container {
                 max-width: 800px;
                 margin: 0 auto;
-                padding: 0 20px;
+            }
+            .results div {
+                display: flex;
+                align-items: center;
+            }
+            .results p {
+                margin:0;
             }
         </style>
     </head>
     <body>
         <div class="container">
-        <header>
-            <h1> Transfigured Skill Gem Chaos Value Calculator</h1>
-        </header>
-        <main>
-            <section>
-                <p>
-                    Use this tool to determine the best skill gem color to transfigure in the lab. It retrieves data from <a href="https://poe.ninja/">PoeNinja</a>, calculates the value by summing up the prices, and divides by each possible transfigured gem you can obtain.
-                    You can also ignore gems below a certain value, assuming they can't be sold, and calculate the value of a gem based on its level and quality.
-                View the source code on <a href="https://github.com/DeeKahy/poeGem" target="_blank" rel="noopener">GitHub</a>.</p>
-            </section>
+            <header>
+                <h1>Transfigured Skill Gem Chaos Value Calculator</h1>
+            </header>
+            <main>
+                <section>
+                    <p>
+                        Use this tool to determine the best skill gem color to
+                        transfigure in the lab. It retrieves data from
+                        <a href="https://poe.ninja/">PoeNinja</a>, calculates
+                        the value by summing up the prices, and divides by each
+                        possible transfigured gem you can obtain. You can also
+                        ignore gems below a certain value, assuming they can't
+                        be sold, and calculate the value of a gem based on its
+                        level and quality. View the source code on
+                        <a
+                            href="https://github.com/DeeKahy/poeGem"
+                            target="_blank"
+                            rel="noopener"
+                            >GitHub</a
+                        >.
+                    </p>
+                </section>
 
-            <section>
-                <form id="value-form">
-                    <div class="form-group">
-                        <label for="league-select">League:</label>
-                        <select id="league-select" name="league">
-                            <option value="">Loading leagues...</option>
-                        </select>
+                <section>
+                    <form id="value-form">
+                        <div class="form-group">
+                            <label for="league-select">League:</label>
+                            <select id="league-select" name="league">
+                                <option value="">Loading leagues...</option>
+                            </select>
+                        </div>
+
+                        <label for="ignoreAfterChaos"
+                            >Ignore gems below this value (Chaos):</label
+                        >
+                        <input
+                            type="number"
+                            name="ignoreAfterChaos"
+                            id="ignoreAfterChaos"
+                            value="5"
+                            style="width: 100px"
+                        />
+
+                        <fieldset id="gemLevel">
+                            <legend>Gem Level:</legend>
+                            <input
+                                type="radio"
+                                class="L1"
+                                name="gemLevel"
+                                value="1"
+                                checked
+                            />
+                            <label htmlFor="L1">1</label>
+                            <input
+                                type="radio"
+                                class="L20"
+                                name="gemLevel"
+                                value="20"
+                            />
+                            <label htmlFor="L20">20</label>
+                            <input
+                                type="radio"
+                                class="L21"
+                                name="gemLevel"
+                                value="21"
+                            />
+                            <label htmlFor="L21">21</label>
+                        </fieldset>
+
+                        <fieldset id="gemQuality">
+                            <legend>Gem Quality:</legend>
+                            <input
+                                type="radio"
+                                class="Q0"
+                                name="gemQuality"
+                                value="0"
+                                checked
+                            />
+                            <label htmlFor="Q0">0</label>
+                            <input
+                                type="radio"
+                                class="Q20"
+                                name="gemQuality"
+                                value="20"
+                            />
+                            <label htmlFor="Q20">20</label>
+                            <input
+                                type="radio"
+                                class="Q23"
+                                name="gemQuality"
+                                value="23"
+                            />
+                            <label htmlFor="Q23">23</label>
+                        </fieldset>
+
+                        <button type="button" id="calculate">Calculate</button>
+                    </form>
+                </section>
+
+                <section class="results">
+                    <div class="result-item">
+                        <img src="imgs/HeraldofAsh.png" />
+                        <p id="red-result">Waiting...</p>
                     </div>
+                    <div class="result-item">
+                        <img src="imgs/HeraldofIce.png" />
+                        <p id="green-result">Waiting...</p>
+                    </div>
+                    <div class="result-item">
+                        <img src="imgs/HeraldofThunder.png" />
+                        <p id="blue-result">Waiting...</p>
+                    </div>
+                </section>
+                <p>
+                    Disclaimer: This tool is only as accurate as the data
+                    retrieved from <a href="https://poe.ninja/">PoeNinja</a>.
+                </p>
+            </main>
 
-                    <label for="ignoreAfterChaos">Ignore gems below this value (Chaos):</label>
-                    <input type="number" name="ignoreAfterChaos" id="ignoreAfterChaos" value="5" style="width: 100px;">
-
-                    <fieldset id="gemLevel">
-                        <legend>Gem Level:</legend>
-                        <input type="radio" class="L1" name="gemLevel" value="1" checked />
-                        <label htmlFor="L1">1</label>
-                        <input type="radio" class="L20" name="gemLevel" value="20"/>
-                        <label htmlFor="L20">20</label>
-                        <input type="radio" class="L21" name="gemLevel" value="21" />
-                        <label htmlFor="L21">21</label>
-                    </fieldset>
-
-                    <fieldset id="gemQuality">
-                        <legend>Gem Quality:</legend>
-                        <input type="radio" class="Q0" name="gemQuality"  value = "0" checked />
-                        <label htmlFor="Q0">0</label>
-                        <input type="radio" class="Q20" name="gemQuality" value = "20" />
-                        <label htmlFor="Q20">20</label>
-                        <input type="radio" class="Q23" name="gemQuality" value ="23" />
-                        <label htmlFor="Q23">23</label> 
-                    </fieldset>
-
-                    <button type="button" id="calculate">Calculate</button>
-                </form>
-            </section>
-
-            <section class="results">
-                <p id="current-league">Loading league information...</p>
-                <div class="result-item" id="red-result">
-                    Red Gems: Calculating...
-                </div>
-                <div class="result-item" id="green-result">
-                    Green Gems: Calculating...
-                </div>
-                <div class="result-item" id="blue-result">
-                    Blue Gems: Calculating...
-                </div>
-            </section>
-            <p>Disclaimer: This tool is only as accurate as the data retrieved from <a href="https://poe.ninja/">PoeNinja</a>.</p>
-        </main>
-
-        <script src="/grabPoeNinja.js"></script>
-        <script src="/code.js"></script>
+            <script src="/grabPoeNinja.js"></script>
+            <script src="/code.js"></script>
         </div>
     </body>
 </html>
