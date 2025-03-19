@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  poegem:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./cache:/app/cache
+    restart: unless-stopped
