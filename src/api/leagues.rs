@@ -97,6 +97,12 @@ fn get_fallback_leagues() -> LeaguesApiResponse {
                 hardcore: false,
                 indexed: true,
             },
+                League {
+                name: "Keepers".to_string(),
+                display_name: Some("Keepers".to_string()),
+                hardcore: false,
+                indexed: true,
+            },
             League {
                 name: "Hardcore Settlers".to_string(),
                 display_name: Some("Hardcore Settlers".to_string()),
