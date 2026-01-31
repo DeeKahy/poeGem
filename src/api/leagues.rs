@@ -92,12 +92,12 @@ fn get_fallback_leagues() -> LeaguesApiResponse {
                 indexed: true,
             },
             League {
-                name: "Settlers".to_string(),
-                display_name: Some("Settlers".to_string()),
+                name: "Phrecia 2.0".to_string(),
+                display_name: Some("Phrecia 2.0".to_string()),
                 hardcore: false,
                 indexed: true,
             },
-                League {
+            League {
                 name: "Keepers".to_string(),
                 display_name: Some("Keepers".to_string()),
                 hardcore: false,
