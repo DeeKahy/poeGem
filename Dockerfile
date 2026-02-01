@@ -15,6 +15,7 @@ COPY Cargo.toml Cargo.lock ./
 
 # Copy source code and assets
 COPY src ./src
+COPY src/cache ./src/cache
 COPY public ./public
 
 # Build release binary (limit parallelism to reduce memory usage)
