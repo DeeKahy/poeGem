@@ -4,7 +4,7 @@ use serde::Deserialize;
 use tracing::{error, info, warn};
 
 use crate::{
-    models::{SkillGemResponse, GemColor, get_gem_color, CalculationResponse, GemValue},
+    models::{SkillGemResponse, GemColor, CalculationResponse, GemValue, is_transfigured_gem},
     AppState,
 };
 
@@ -150,12 +150,18 @@ pub async fn calculate_gem_roi(
         if gem.trade_filter.is_some() && matches_level && matches_quality && matches_corruption {
             let chaos_value = gem.chaos_value.unwrap_or(0.0);
 
-            if let Some(color) = get_gem_color(&gem.name) {
-                let gem_data = (gem.name.clone(), chaos_value);
-                match color {
-                    GemColor::Red => red_gems.push(gem_data),
-                    GemColor::Green => green_gems.push(gem_data),
-                    GemColor::Blue => blue_gems.push(gem_data),
+            // Only process transfigured gems (contain " of " in name)
+            if is_transfigured_gem(&gem.name) {
+                // Extract color from icon URL
+                if let Some(icon_url) = &gem.icon {
+                    if let Some(color) = GemColor::from_icon_url(icon_url) {
+                        let gem_data = (gem.name.clone(), chaos_value);
+                        match color {
+                            GemColor::Red => red_gems.push(gem_data),
+                            GemColor::Green => green_gems.push(gem_data),
+                            GemColor::Blue => blue_gems.push(gem_data),
+                        }
+                    }
                 }
             }
         }
@@ -165,6 +171,11 @@ pub async fn calculate_gem_roi(
     red_gems.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap_or(std::cmp::Ordering::Equal));
     green_gems.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap_or(std::cmp::Ordering::Equal));
     blue_gems.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap_or(std::cmp::Ordering::Equal));
+
+    info!(
+        "Gem counts - Red: {}, Green: {}, Blue: {} (GT/Trarthus gems excluded - not obtainable from lab)",
+        red_gems.len(), green_gems.len(), blue_gems.len()
+    );
 
     // Calculate probabilities and ROI
     let red_roi = calculate_roi_for_gems(&red_gems, ignore_after_chaos);
