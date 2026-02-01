@@ -12,6 +12,25 @@ You can filter by:
 - Gem quality (0, 20, or 23)
 - Minimum chaos value (ignores cheap gems that won't sell)
 
+## How the calculation works
+
+1. Fetch transfigured gems from POE Ninja, filter by your criteria (level, quality, corruption)
+2. Group gems by color (red/green/blue) based on icon URL
+3. Sort each color group by chaos value (highest first)
+4. Calculate probability of getting each gem
+
+The probability model assumes you get offered 3 random gems of the same color and pick the best one. The chance of the i-th best gem being your pick is:
+
+```
+P(i) = (i-1)(i-2) / [n(n-1)(n-2)/3]
+```
+
+where n = total gems in that color.
+
+5. Expected value = sum of (probability * value) for each gem. Gems below your threshold count as 0.
+
+The most valuable gem has the highest probability (it wins whenever it shows up), while cheap gems rarely get picked (they only "win" when paired with worse options).
+
 ## Running it
 
 ### Docker
