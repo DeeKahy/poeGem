@@ -38,9 +38,9 @@ yarn-error.log*
 logs/
 test_logs/
 
-# Cache directories
-cache/
-test_cache/
+# Cache directories (exclude only root-level, not src/cache)
+/cache/
+/test_cache/
 .cache/
 
 # Build artifacts
