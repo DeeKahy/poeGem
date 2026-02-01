@@ -172,8 +172,7 @@ impl GemColor {
             .split('/')
             .next()?;
 
-        // Decode base64 and extract gd value
-        let decoded = base64::engine::general_purpose::STANDARD
+        let decoded = base64::engine::general_purpose::STANDARD_NO_PAD
             .decode(encoded)
             .ok()?;
         let json_str = String::from_utf8(decoded).ok()?;

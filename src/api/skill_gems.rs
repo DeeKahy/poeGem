@@ -173,7 +173,7 @@ pub async fn calculate_gem_roi(
     blue_gems.sort_by(|a, b| b.1.partial_cmp(&a.1).unwrap_or(std::cmp::Ordering::Equal));
 
     info!(
-        "Gem counts - Red: {}, Green: {}, Blue: {} (GT/Trarthus gems excluded - not obtainable from lab)",
+        "Gem counts - Red: {}, Green: {}, Blue: {}",
         red_gems.len(), green_gems.len(), blue_gems.len()
     );
 
