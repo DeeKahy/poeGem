@@ -10,6 +10,22 @@ pub struct League {
     pub indexed: bool,
 }
 
+/// Response from the official PoE API for leagues
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct OfficialLeague {
+    pub id: String,
+    pub realm: Option<String>,
+    #[serde(rename = "endAt")]
+    pub end_at: Option<String>,
+    pub rules: Option<Vec<LeagueRule>>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct LeagueRule {
+    pub id: String,
+    pub name: Option<String>,
+}
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct LeaguesResponse {
     #[serde(rename = "economyLeagues")]
