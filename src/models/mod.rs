@@ -213,9 +213,47 @@ impl GemColor {
     }
 }
 
-/// Check if a gem name looks like a transfigured gem (contains " of ")
+/// Some normal gems naturally contain " of " (e.g., "Herald of Ice", "Rain of Arrows"),
+/// so we exclude those. Their transfigured versions contain two "of"s
+/// (e.g., "Rain of Arrows of Artillery").
 pub fn is_transfigured_gem(gem_name: &str) -> bool {
-    gem_name.contains(" of ")
+    let of_count = gem_name.matches(" of ").count();
+    
+    // If there are 2 or more " of " occurrences, it's definitely transfigured
+    // (e.g., "Rain of Arrows of Artillery")
+    if of_count >= 2 {
+        return true;
+    }
+    
+    // If there's exactly one " of ", check against known non-transfigured gems
+    if of_count == 1 {
+        // List of non-transfigured gems that naturally contain " of "
+        const NON_TRANSFIGURED_WITH_OF: &[&str] = &[
+            "Herald of Ash",
+            "Herald of Ice",
+            "Herald of Thunder",
+            "Herald of Agony",
+            "Herald of Purity",
+
+            "Purity of Fire",
+            "Purity of Ice",
+            "Purity of Lightning",
+            "Purity of Elements",
+
+            "Rain of Arrows",
+            "Eye of Winter",
+            "Wall of Force",
+            "Orb of Storms",
+            "Wave of Conviction",
+            "Sigil of Power",
+        ];
+        
+        // If the gem is in the exclusion list, it's not transfigured
+        !NON_TRANSFIGURED_WITH_OF.contains(&gem_name)
+    } else {
+        // No " of " found, should not be transfigured
+        false
+    }
 }
 
 #[cfg(test)]
@@ -243,9 +281,33 @@ mod tests {
 
     #[test]
     fn test_is_transfigured_gem() {
+        // Transfigured gems with single " of " (base gem doesn't contain "of")
         assert!(is_transfigured_gem("Spark of Unpredictability"));
         assert!(is_transfigured_gem("Molten Strike of the Zenith"));
+        
+        // Transfigured gems with double " of " (base gem contains "of")
+        assert!(is_transfigured_gem("Rain of Arrows of Artillery"));
+        assert!(is_transfigured_gem("Orb of Storms of Eruption"));
+        
+        // Non-transfigured gems without " of "
         assert!(!is_transfigured_gem("Spark"));
         assert!(!is_transfigured_gem("Awakened Multistrike Support"));
+        
+        // Non-transfigured gems with " of " in their base name
+        assert!(!is_transfigured_gem("Herald of Ice"));
+        assert!(!is_transfigured_gem("Herald of Ash"));
+        assert!(!is_transfigured_gem("Herald of Thunder"));
+        assert!(!is_transfigured_gem("Herald of Agony"));
+        assert!(!is_transfigured_gem("Herald of Purity"));
+        assert!(!is_transfigured_gem("Purity of Fire"));
+        assert!(!is_transfigured_gem("Purity of Ice"));
+        assert!(!is_transfigured_gem("Purity of Lightning"));
+        assert!(!is_transfigured_gem("Purity of Elements"));
+        assert!(!is_transfigured_gem("Rain of Arrows"));
+        assert!(!is_transfigured_gem("Eye of Winter"));
+        assert!(!is_transfigured_gem("Wall of Force"));
+        assert!(!is_transfigured_gem("Orb of Storms"));
+        assert!(!is_transfigured_gem("Wave of Conviction"));
+        assert!(!is_transfigured_gem("Sigil of Power"));
     }
 }
