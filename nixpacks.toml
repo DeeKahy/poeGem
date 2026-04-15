@@ -1,2 +1,5 @@
+[variables]
+CARGO_BUILD_JOBS = "1"
+
 [start]
 cmd = "poe-gem-calculator"
