@@ -19,6 +19,7 @@
           vendorHash = null; # standard library only
           env.CGO_ENABLED = "0";
           ldflags = [ "-s" "-w" ];
+          postInstall = "mv $out/bin/poeGem $out/bin/poegem"; # module path is poeGem
           meta.mainProgram = "poegem";
         };
         default = poegem;
