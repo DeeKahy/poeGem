@@ -1,90 +1,61 @@
-# POE Gem Calculator
+# poeGem
 
-A tool to figure out which transfigured skill gem color gives the best expected return in Path of Exile. Pulls pricing data from [POE Ninja](https://poe.ninja/), groups gems by color, and calculates the average value for each.
+What a Divine Font gem craft is worth in the lab, this league. Live at
+<https://poegem.smallapp.cc>.
 
-## What it does
+## What it answers
 
-When you transfigure a skill gem in the lab, you get a random transfigured version. This tool tells you which gem color (red/green/blue) has the highest expected value based on current market prices.
+**Random transfigure, pick 1 of 3.** You put in a gem; the Font offers three
+different transfigured gems of its colour and you keep the most valuable. For
+each colour the page shows the expected value of the gem you keep, the cheapest
+gem of that colour to put in, the net per craft, the chance at least one of the
+three is worth keeping, and a per-lab-run total. Click a colour for every
+possible outcome with its chance of being the one you keep.
 
-You can filter by:
-- League
-- Gem level (1, 20, or 21)
-- Gem quality (0, 20, or 23)
-- Minimum chaos value (ignores cheap gems that won't sell)
+**Transform into its own transfigured version.** This option only shows up
+sometimes. When it does, the gem worth having brought is the one whose best
+transfigured form is worth the most above the base gem. The page shows the top 3
+and a full searchable table.
 
-## How the calculation works
+Settings: league, level/quality of the gem you put in (1, 1/20, 20, 20/20),
+ignore results under N chaos or with fewer than N listings (they still take a
+slot, they just count as 0), crafts per run, and lab cost. They live in the URL,
+so a link reproduces the view.
 
-1. Fetch transfigured gems from POE Ninja, filter by your criteria (level, quality, corruption)
-2. Group gems by color (red/green/blue) based on icon URL
-3. Sort each color group by chaos value (highest first)
-4. Calculate probability of getting each gem
+## The maths
 
-The probability model assumes you get offered 3 random gems of the same color and pick the best one. The chance of the i-th best gem being your pick is:
+Sort the colour's pool best-first. Gem `r` (0-based) is the one you keep exactly
+when the other two offered gems both rank below it:
 
-```
-P(i) = (i-1)(i-2) / [n(n-1)(n-2)/3]
-```
+    P(r) = C(n - r - 1, 2) / C(n, 3)        EV = Σ value(r) · P(r)
 
-where n = total gems in that color.
+The probabilities sum to 1, and the result matches a brute force over every
+triple. It assumes every eligible gem is equally likely; GGG publishes no weights.
 
-5. Expected value = sum of (probability * value) for each gem. Gems below your threshold count as 0.
+## Where the gem list comes from (and why it follows new seasons)
 
-The most valuable gem has the highest probability (it wins whenever it shows up), while cheap gems rarely get picked (they only "win" when paired with worse options).
+Nothing is hand-maintained. Once a day the server rebuilds the Font pool from:
 
-## Running it
+- GGG's trade catalogue (`/api/trade/data/items`): a transfigured gem has a
+  discriminator and its `type` is the base gem. The old version guessed from
+  `" of "` in the name, which counted Herald of Ash, Orb of Storms, Purity of Ice
+  and others as lab outcomes, and missed any gem poe.ninja did not list.
+- RePoE for base gem colours (a transfigured gem has its base gem's colour), with
+  the colour baked into GGG's icon URL as a fallback for brand-new gems.
 
-### Docker
+Excluded: Trarthus gems, Vaal variants, supports and Imbued gems. In 3.28 this
+gives red 40, green 75, blue 87. When a patch adds or removes gems, the page
+lists the change.
 
-```bash
-docker-compose up -d
-```
+Prices: poe.ninja (`/poe1/api/economy/...`), cached 30 minutes per league.
 
-Then open http://localhost:3000
+## Run
 
-### From source
+    nix develop
+    go test ./...
+    go run . -addr 127.0.0.1:18102 -data ./data
 
-```bash
-cargo build --release
-cargo run
-```
+NixOS: `services.poegem = { enable = true; port = 8102; };` from this flake's
+`nixosModules.default`. Standard library only, no database.
 
-### CLI options
-
-```
--p, --port <PORT>       Port [default: 3000]
-    --host <HOST>       Host [default: 0.0.0.0]
-    --cache-dir <DIR>   Cache directory [default: cache]
-    --log-level <LEVEL> Log level [default: info]
-```
-
-## API
-
-- `GET /` - Web UI
-- `GET /health` - Health check
-- `GET /api/leagues` - List available leagues
-- `GET /api/skill-gems?league=<league>` - Raw gem data
-- `GET /api/calculate?league=<league>&ignore_after_chaos=5&gem_level=1&gem_quality=0` - Calculate best color
-
-## Project structure
-
-```
-src/
-  main.rs           # Server setup
-  api/
-    leagues.rs      # League endpoints
-    skill_gems.rs   # Gem data and calculation
-  cache/
-    mod.rs          # File-based caching
-  models/
-    mod.rs          # Data types
-```
-
-## Notes
-
-This depends on POE Ninja's API. If their format changes, things will break. Open an issue or PR if that happens.
-
-Data is cached for 1 hour to avoid hammering their API.
-
-## License
-
-MIT
+The previous Rust version is in the git history.
