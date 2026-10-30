@@ -1,0 +1,46 @@
+/* Plain on purpose. */
+body { margin: 0 auto; max-width: 1100px; padding: 12px 16px 40px; font: 14px/1.5 system-ui, sans-serif; color: #222; background: #fff; }
+a { color: #2563eb; }
+header { display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap; border-bottom: 1px solid #ddd; padding-bottom: 8px; }
+h1 { font-size: 22px; margin: 0; }
+h2 { font-size: 17px; margin: 28px 0 4px; }
+h3 { font-size: 15px; margin: 16px 0 4px; }
+.muted { color: #777; }
+.small { font-size: 12px; }
+.up { color: #15803d; }
+.down { color: #b91c1c; }
+
+.controls { display: flex; flex-wrap: wrap; gap: 10px 18px; padding: 12px 0; position: sticky; top: 0; background: #fff; border-bottom: 1px solid #eee; z-index: 1; }
+.controls label, .tools label { display: flex; flex-direction: column; font-size: 12px; color: #555; }
+input, select { font: inherit; }
+input[type=number] { width: 80px; }
+.tools { display: flex; gap: 16px; margin: 12px 0 6px; }
+
+.cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 10px 0; }
+@media (max-width: 800px) { .cards { grid-template-columns: 1fr; } }
+.card { display: flex; flex-direction: column; gap: 3px; text-align: left; font: inherit; color: inherit; background: #fff;
+  border: 1px solid #ddd; border-top: 4px solid #999; border-radius: 4px; padding: 10px 12px; }
+.card.clickable { cursor: pointer; }
+.card.clickable:hover { background: #fafafa; }
+.card.open { background: #f5f7ff; }
+.card.best { border-color: #15803d; border-top-width: 4px; }
+.card.r { border-top-color: #c0392b; }
+.card.g { border-top-color: #27ae60; }
+.card.b { border-top-color: #2e6bd6; }
+.card .title { font-weight: 600; }
+.card .big { font-size: 22px; font-weight: 600; }
+.card .override { width: 60px; margin-left: 4px; font-size: 12px; }
+.run { font-size: 15px; }
+
+table.grid { width: 100%; border-collapse: collapse; }
+.grid th, .grid td { padding: 3px 6px; border-bottom: 1px solid #eee; text-align: left; }
+.grid th { font-weight: 600; font-size: 12px; color: #555; position: sticky; top: 64px; background: #fff; }
+.grid .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+tr.dim td { color: #aaa; }
+tr.dim a { color: #8aa4d6; }
+.dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; background: #999; }
+.dot.r { background: #c0392b; }
+.dot.g { background: #27ae60; }
+.dot.b { background: #2e6bd6; }
+details { margin-top: 10px; }
+footer { margin-top: 40px; border-top: 1px solid #eee; padding-top: 8px; }

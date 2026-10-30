@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>poeGem · Divine Font gem calculator</title>
+<meta name="description" content="What a Divine Font transfigured gem craft is worth this league: expected value per colour, gems to bring, the full Font pool.">
+<link rel="stylesheet" href="app.css?v=2">
+<script src="app.js?v=2" defer></script>
+</head>
+<body>
+<header>
+  <h1>poeGem</h1>
+  <span class="muted">What a Divine Font gem craft is worth in the lab, this league.</span>
+</header>
+
+<form id="controls" class="controls">
+  <label>League <select id="league"></select></label>
+  <label>Gem you put in
+    <select id="variant">
+      <option value="1">level 1, 0%</option>
+      <option value="1/20">level 1, 20%</option>
+      <option value="20">level 20, 0%</option>
+      <option value="20/20">level 20, 20%</option>
+    </select></label>
+  <label>Ignore results under <input id="minChaos" type="number" min="0" step="1" value="10"> c</label>
+  <label>…or with fewer than <input id="minListings" type="number" min="0" step="1" value="3"> listings</label>
+  <label>Crafts per lab run <input id="crafts" type="number" min="1" max="4" step="1" value="2"></label>
+  <label>Lab cost <input id="labCost" type="number" min="0" step="0.5" placeholder="auto"> c</label>
+</form>
+<p id="status" class="muted">Loading…</p>
+
+<section id="font" hidden>
+  <h2>Random transfigure: pick 1 of 3 of your gem's colour</h2>
+  <p class="muted">You put in a gem, the Font offers three different transfigured gems of its colour, and you keep the most valuable.
+    Click a colour to see every possible outcome.</p>
+  <div id="cards" class="cards"></div>
+  <p id="run" class="run"></p>
+  <div id="pool"></div>
+</section>
+
+<section id="own" hidden>
+  <h2>Transform into its own transfigured version (when offered)</h2>
+  <p class="muted">This option only shows up sometimes and keeps your gem's level and quality. When it does, these are the gems worth having brought.
+    Spread = best transfigured form − the base gem, at the level/quality above.</p>
+  <div id="bring" class="cards"></div>
+  <div class="tools">
+    <label>Colour <select id="ownColour"><option value="">all</option><option value="r">red</option><option value="g">green</option><option value="b">blue</option></select></label>
+    <label>Find <input id="ownFind" type="search" placeholder="gem name"></label>
+  </div>
+  <table class="grid" id="ownTable"></table>
+</section>
+
+<section id="pool-changes" hidden>
+  <h2>The Font pool</h2>
+  <p id="catinfo" class="muted"></p>
+  <div id="changes"></div>
+  <details>
+    <summary>Assumptions</summary>
+    <ul>
+      <li>The three gems offered are different, and every eligible gem of the colour is equally likely. GGG publishes no weights, so this is an assumption.</li>
+      <li>The result keeps the level and quality of the gem you put in, so it is priced at the same level/quality.</li>
+      <li>Results under your minimum price or listing count still take up a slot (the Font can still offer them); they just count as worth 0.</li>
+      <li>Prices are poe.ninja's listing prices, not sales. Few listings means the price is a guess.</li>
+      <li>The pool is GGG's own list of transfigured gems, minus Trarthus gems, Vaal variants, supports and Imbued gems.</li>
+    </ul>
+  </details>
+</section>
+
+<footer class="muted small">Prices: <a href="https://poe.ninja">poe.ninja</a>. Gem list: GGG's trade data and <a href="https://github.com/repoe-fork/repoe-fork">RePoE</a>.
+  Source: <a href="https://github.com/DeeKahy/poeGem">github.com/DeeKahy/poeGem</a>.</footer>
+</body>
+</html>
